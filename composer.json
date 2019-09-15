@@ -1,0 +1,37 @@
+{
+    "name": "decadal/lift",
+    "description": "Lift package",
+    "keywords": ["decadal"],
+    "homepage": "https://toster.ru/user/Decadal",
+    "license": "Proprietary",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Maruhnich Konstantin",
+            "email": "nocturneumbra@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "ext-mbstring" : "*",
+        "symfony/validator": "^4.2",
+        "zendframework/zend-validator": "^2.12",
+        "zendframework/zend-router": "^3.3",
+        "zendframework/zend-i18n": "^2.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Decadal\\Lift\\": "src"
+
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Decadal\\LiftTest\\": "test"
+        }
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <testsuites>
+        <testsuite name="Devtools_tools">
+            <directory>./test/Tool</directory>
+        </testsuite>
+        <testsuite name="Devtools_zend">
+            <directory>./test/Zend</directory>
+        </testsuite>
+        <testsuite name="Modules_user">
+            <directory>./module/User/test</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
