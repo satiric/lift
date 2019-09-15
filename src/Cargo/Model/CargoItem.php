@@ -30,9 +30,9 @@ class CargoItem implements CargoItemInterface, HasDestinationInterface
      */
     private $dimensions;
     /**
-     * @var NavigationPointInterface|null
+     * @var int|null
      */
-    private $point;
+    private $destination;
 
 
     /**
@@ -40,15 +40,15 @@ class CargoItem implements CargoItemInterface, HasDestinationInterface
      * @param int $weight
      * @param int $height
      * @param int $width
-     * @param NavigationPointInterface|null $point
+     * @param int|null $destination
      * @throws BadParamException
      */
-    public function __construct(int $weight, int $height, int $width, ?NavigationPointInterface $point)
+    public function __construct(int $weight, int $height, int $width, ?int $destination)
     {
         $this->validateValues($weight, $height, $width);
         $this->weight = $weight;
         $this->dimensions = $this->transformToDimensions($height, $width);
-        $this->point = $point;
+        $this->destination = $destination;
     }
 
     /**
@@ -68,11 +68,11 @@ class CargoItem implements CargoItemInterface, HasDestinationInterface
     }
 
     /**
-     * @return NavigationPointInterface|null
+     * @return int|null
      */
-    public function getDestination(): ?NavigationPointInterface
+    public function getDestination(): ?int
     {
-        return $this->point;
+        return $this->destination;
     }
 
     /**

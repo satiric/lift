@@ -10,8 +10,11 @@ namespace Decadal\Lift;
 
 
 use Decadal\Lift\Cargo\Collection\CargoCollection;
-use Decadal\Lift\Navigation\NavigationPointInterface;
 
+/**
+ * Interface LiftInterface
+ * @package Decadal\Lift
+ */
 interface LiftInterface
 {
     /**
@@ -20,6 +23,9 @@ interface LiftInterface
      */
     public function acceptCargo(CargoCollection $cargoCollection);
 
-
-    public function callTo(NavigationPointInterface $point, string $direction);
+    /**
+     * @param array[] ['direction1' => [1,2], 'direction2' => [3,4] ]
+     * @return mixed
+     */
+    public function callTo(array $directionDestinationMap);
 }

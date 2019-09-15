@@ -14,5 +14,5 @@ namespace Decadal\Lift\Navigation;
  */
 interface HasDestinationInterface
 {
-    public function getDestination() : ? NavigationPointInterface;
+    public function getDestination() : ? int;
 }

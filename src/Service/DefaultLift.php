@@ -81,19 +81,21 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
     }
 
     /**
-     * @param NavigationPointInterface $point
-     * @param string $direction
+     * @param array $directionDestinationMap
+     * @return mixed|void
      */
-    public function callTo(NavigationPointInterface $point, string $direction)
+    public function callTo(array $directionDestinationMap)
     {
         //todo check that direction is allowed
         if($this->movementManager->isMoving()) {
             throw new \RuntimeException("The lift moving");
         }
-        $needMovement = $this->getNextPoint() === null;
-        $this->planner->planPoint($point, $direction);
-        if($needMovement) {
-            $this->move($this->getNextPoint());
+        foreach ($directionDestinationMap as $direction => $destinations) {
+            for ($i = 0, $sz = count($destinations); $i < $sz; $i++) {
+                $destination = $destinations[$i];
+                $point = $this->navigator->getPointByPosition($destination);
+                $this->planner->planPoint($point, $direction);
+            }
         }
     }
 
@@ -110,10 +112,9 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
             throw new BadParamException("Doors are closed");
         }
         $this->cargoService->acceptCargo($cargoItem);
-
         if($cargoItem instanceof HasDestinationInterface) {
-            $point = $cargoItem->getDestination();
-
+            $destination = $cargoItem->getDestination();
+            $point = $this->navigator->getPointByPosition($destination);
             $this->planner->planPoint($point, null);
         }
     }
@@ -139,19 +140,31 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
     }
 
     /**
-     * @return NavigationPointInterface
+     * @return int
      */
-    public function getCurrentPoint() : NavigationPointInterface
+    public function getCurrentPosition(): int
     {
-        return $this->navigator->getCurrentPoint();
+        return $this->navigator->getCurrentPoint()->getPosition();
     }
 
     /**
-     * @return NavigationPointInterface|null
+     * @return int|null
      */
-    public function getDestinationPoint() : ? NavigationPointInterface
+    public function getDestination() : ? int
     {
-        return $this->getNextPoint();
+        $point = $this->getNextPoint();
+        return  $point === null
+            ? null
+            : $point->getPosition();
+    }
+
+    /**
+     *
+     */
+    public function toNextDestination()
+    {
+        $point = $this->getNextPoint();
+        $this->move($point);
     }
 
     /**

@@ -18,4 +18,6 @@ interface PointsMapInterface
     public function getLast() : NavigationPointInterface;
 
     public function getSequence() : array;
+
+    public function get(int $position) : ?NavigationPointInterface;
 }

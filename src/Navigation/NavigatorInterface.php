@@ -25,4 +25,8 @@ interface NavigatorInterface
     public function determineDirection(NavigationPointInterface $point) : ?string;
 
     public function determineDistance(NavigationPointInterface $point) : int;
+
+
+    public function getPointByPosition(int $position);
+
 }

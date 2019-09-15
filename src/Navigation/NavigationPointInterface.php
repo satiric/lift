@@ -10,7 +10,5 @@ namespace Decadal\Lift\Navigation;
 
 interface NavigationPointInterface
 {
-    public function getHeight() : int;
-
     public function getPosition() : int;
 }

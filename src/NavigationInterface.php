@@ -13,8 +13,8 @@ use Decadal\Lift\Navigation\NavigationPointInterface;
 
 interface NavigationInterface
 {
-    public function getCurrentPoint() : NavigationPointInterface;
+    public function getCurrentPosition() : int;
 
-    public function getDestinationPoint() : ?NavigationPointInterface;
+    public function getDestination() : ?int;
 
 }

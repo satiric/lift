@@ -9,6 +9,7 @@
 namespace Decadal\Lift\Navigation;
 
 
+use Decadal\Lift\Common\Exception\BadParamException;
 use Decadal\Lift\Movement\Engine\Enum\Directions;
 use Decadal\Lift\Navigation\Service\DistanceCalculatorInterface;
 use Decadal\Lift\Navigation\Service\PointsMapInterface;
@@ -78,5 +79,19 @@ class DefaultNavigator implements NavigatorInterface
     public function determineDistance(NavigationPointInterface $point): int
     {
         // TODO: Implement determineDistance() method.
+    }
+
+    /**
+     * @param int $position
+     * @return NavigationPointInterface
+     * @throws BadParamException
+     */
+    public function getPointByPosition(int $position) : NavigationPointInterface
+    {
+        $point = $this->pointsMap->get($position);
+        if($point === null) {
+            throw new BadParamException("Such point is not found");
+        }
+        return $point;
     }
 }

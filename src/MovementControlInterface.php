@@ -15,5 +15,5 @@ interface MovementControlInterface
 
     public function unfreeze();
 
-    public function toNextPoint();
+    public function toNextDestination();
 }
