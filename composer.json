@@ -13,10 +13,8 @@
     ],
     "require": {
         "php": "^7.2",
-        "ext-json": "*",
         "ext-mbstring" : "*",
         "zendframework/zend-validator": "^2.12",
-        "zendframework/zend-i18n": "^2.9",
         "zfcampus/zf-console": "^1.4",
         "zendframework/zend-servicemanager": "^3.4",
         "zendframework/zend-mvc": "^3.1",

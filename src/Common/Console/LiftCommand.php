@@ -36,7 +36,7 @@ class LiftCommand implements CommandInterface
     public function __construct(LiftInterface $lift)
     {
         if(!$lift instanceof  NavigationInterface || !$lift instanceof MovementControlInterface) {
-            throw new \Exception("Lift should implements Navigation and MovementControl interfaces")
+            throw new \Exception("Lift should implements Navigation and MovementControl interfaces");
         }
         $this->lift = $lift;
     }
