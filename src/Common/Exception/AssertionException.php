@@ -12,8 +12,7 @@ namespace Decadal\Lift\Common\Exception;
  * Exceptions for throwing in assert() functions.
  * Should be used for debugging and catching errors that will be cause for changes in the code.
  * Class AssertionException
- * @package Runple\Devtools\Exception
- *
+ * @package Decadal\Lift\Common\Exception
  */
 class AssertionException extends \Exception
 {

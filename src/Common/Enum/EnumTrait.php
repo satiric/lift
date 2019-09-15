@@ -33,7 +33,7 @@ trait EnumTrait
      */
     public static function getList(): array
     {
-        $className = get_class(self::class); //DO NOT USE __CLASS__
+        $className = self::class; //DO NOT USE __CLASS__
         $constants = (new \ReflectionClass($className))->getConstants();
         return array_values($constants);
     }

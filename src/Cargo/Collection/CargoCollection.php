@@ -3,7 +3,7 @@
  * Date: 14.09.19
  * Time: 11:33
  * @author Konstantin Maruhnich <nocturneumbra@gmail.com>
- * Runple
+ * Iterios
  */
 
 namespace Decadal\Lift\Cargo\Collection;

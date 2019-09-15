@@ -8,7 +8,6 @@
 
 namespace Decadal\Lift\Service;
 
-
 use Decadal\Lift\Common\Exception\BadParamException;
 use Decadal\Lift\Cargo\Collection\CargoCollection;
 use Decadal\Lift\Cargo\CargoServiceInterface;
@@ -23,6 +22,10 @@ use Decadal\Lift\Navigation\NavigatorInterface;
 use Decadal\Lift\NavigationInterface;
 use Decadal\Lift\Planner\PlannerInterface;
 
+/**
+ * Class DefaultLift
+ * @package Decadal\Lift\Service
+ */
 class DefaultLift implements LiftInterface, MovementControlInterface, NavigationInterface
 {
     /**
@@ -55,7 +58,14 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
      */
     private $pause = false;
 
-
+    /**
+     * DefaultLift constructor.
+     * @param DoorsManagerInterface $doorsManager
+     * @param CargoServiceInterface $cargoService
+     * @param MovementManagerInterface $movementManager
+     * @param PlannerInterface $planner
+     * @param NavigatorInterface $navigator
+     */
     public function __construct(
         DoorsManagerInterface $doorsManager,
         CargoServiceInterface $cargoService,
@@ -108,6 +118,9 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
         }
     }
 
+    /**
+     *
+     */
     public function freeze()
     {
         if($this->movementManager->isMoving()) {
@@ -116,17 +129,26 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
         $this->pause = true;
     }
 
+    /**
+     *
+     */
     public function unfreeze()
     {
         $this->pause = false;
         $this->move($this->getNextPoint());
     }
 
+    /**
+     * @return NavigationPointInterface
+     */
     public function getCurrentPoint() : NavigationPointInterface
     {
         return $this->navigator->getCurrentPoint();
     }
 
+    /**
+     * @return NavigationPointInterface|null
+     */
     public function getDestinationPoint() : ? NavigationPointInterface
     {
         return $this->getNextPoint();
@@ -148,7 +170,7 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
         $this->movementManager->move($movement);
         $this->doorsManager->openDoors();
         $this->planner->arrived($point);
-        $this->cargoManager->freeCargoByDestination($point);
+        $this->cargoService->freeCargoByDestination($point);
         //todo for parallelism
         //set timeout for waiting acceptance cargo and calls
     }
@@ -160,7 +182,7 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
     private function convertPointToMovement(NavigationPointInterface $point) : Movement
     {
         $direction = $this->navigator->determineDirection($point);
-        $weight = $this->cargoManager->getTotalWeight();
+        $weight = $this->cargoService->getTotalWeight();
         $distance = $this->navigator->determineDistance($point);
         $movement = new Movement($direction, $weight, $distance);
         return $movement;
