@@ -16,12 +16,15 @@ use Decadal\Lift\Cargo\CargoServiceInterface;
 use Decadal\Lift\Cargo\Factory\DefaultCargoServiceFactory;
 use Decadal\Lift\Common\Console\LiftCommand;
 use Decadal\Lift\Common\Console\LiftCommandHandler;
+use Decadal\Lift\Common\Factory\Console\LiftCommandFactory;
 use Decadal\Lift\Doors\DoorsManagerInterface;
 use Decadal\Lift\Doors\Driver\DoorsDriverInterface;
 use Decadal\Lift\Doors\Factory\DoorsManagerFactory;
 use Decadal\Lift\Doors\Factory\Driver\DoorsPhysicalDriverFactory;
 use Decadal\Lift\Doors\Factory\Service\DefaultDoorsFactory;
+use Decadal\Lift\Doors\Factory\Service\DoorsManipulatorFactory;
 use Decadal\Lift\Doors\Service\DoorsInterface;
+use Decadal\Lift\Doors\Service\DoorsManipulatorInterface;
 use Decadal\Lift\Factory\Service\DefaultLiftFactory;
 use Decadal\Lift\LiftInterface;
 use Decadal\Lift\Movement\Engine\Driver\EngineDriverInterface;
@@ -57,13 +60,14 @@ return [
     ],
     'service_manager' => [
         'factories' => [
-            LiftCommand::class => InvokableFactory::class,
+            LiftCommand::class => LiftCommandFactory::class,
             LiftCommandHandler::class => InvokableFactory::class,
             LiftInterface::class => DefaultLiftFactory::class,
 
             DoorsInterface::class => DefaultDoorsFactory::class,
             DoorsManagerInterface::class => DoorsManagerFactory::class,
             DoorsDriverInterface::class => DoorsPhysicalDriverFactory::class,
+            DoorsManipulatorInterface::class => DoorsManipulatorFactory::class,
             CargoServiceInterface::class => DefaultCargoServiceFactory::class,
 
             MovementManagerInterface::class => MovementManagerFactory::class,

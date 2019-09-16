@@ -23,7 +23,7 @@ class DoorsPhysicalDriver implements DoorsDriverInterface
     /**
      * @var string
      */
-    private $state = DoorsStates::CLOSED;
+    private $state = DoorsStates::OPENED;
 
     /**
      * @return string

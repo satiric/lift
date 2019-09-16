@@ -19,6 +19,9 @@ use Decadal\Lift\Doors\Service\DoorsInterface;
  */
 class DoorsCollection
 {
+    /**
+     * @var DoorsInterface[]
+     */
     private $doors = [];
 
     /**

@@ -11,6 +11,10 @@ namespace Decadal\Lift\Planner;
 
 use Decadal\Lift\Navigation\NavigationPointInterface;
 
+/**
+ * Class PlannerService
+ * @package Decadal\Lift\Planner
+ */
 class PlannerService implements PlannerInterface
 {
     public function planPoint(NavigationPointInterface $point, ?string $direction)
