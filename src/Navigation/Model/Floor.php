@@ -8,13 +8,14 @@
 
 namespace Decadal\Lift\Navigation\Model;
 
+use Decadal\Lift\Navigation\DistanceItemInterface;
 use Decadal\Lift\Navigation\NavigationPointInterface;
 
 /**
  * Class Floor
  * @package Decadal\Lift\Navigation\Model
  */
-class Floor implements NavigationPointInterface
+class Floor implements NavigationPointInterface, DistanceItemInterface
 {
     /**
      * @var int

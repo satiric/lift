@@ -94,16 +94,17 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
             for ($i = 0, $sz = count($destinations); $i < $sz; $i++) {
                 $destination = $destinations[$i];
                 $point = $this->navigator->getPointByPosition($destination);
-                $this->planner->planPoint($point, $direction);
+                $this->planPoint($point, $direction);
             }
         }
     }
 
     /**
-     * @param CargoCollection $cargoItem
+     * @param CargoCollection $collection
+     * @return mixed|void
      * @throws BadParamException
      */
-    public function acceptCargo(CargoCollection $cargoItem)
+    public function acceptCargo(CargoCollection $collection)
     {
         if($this->movementManager->isMoving()) {
             throw new \RuntimeException("The lift moving");
@@ -111,11 +112,15 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
         if($this->doorsManager->isDoorsClosed()) {
             throw new BadParamException("Doors are closed");
         }
-        $this->cargoService->acceptCargo($cargoItem);
-        if($cargoItem instanceof HasDestinationInterface) {
-            $destination = $cargoItem->getDestination();
-            $point = $this->navigator->getPointByPosition($destination);
-            $this->planner->planPoint($point, null);
+        $this->cargoService->acceptCargo($collection);
+        $cargo = $collection->getCargo();
+        for ($i = 0, $sz = count($cargo); $i < $sz; $i++) {
+            $cargoItem = $cargo[$i];
+            if($cargoItem instanceof HasDestinationInterface) {
+                $destination = $cargoItem->getDestination();
+                $point = $this->navigator->getPointByPosition($destination);
+                $this->planPoint($point, null);
+            }
         }
     }
 
@@ -164,7 +169,9 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
     public function toNextDestination()
     {
         $point = $this->getNextPoint();
-        $this->move($point);
+        ($point !== null)
+            ? $this->move($point)
+            : $this->move($this->navigator->getFirstPoint()); //move to first floor
     }
 
     /**
@@ -178,14 +185,12 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
         if(!$this->doorsManager->isDoorsClosed()) {
             $this->doorsManager->closeDoors();
         }
-
         $movement = $this->convertPointToMovement($point);
         $this->movementManager->move($movement);
-        $this->doorsManager->openDoors();
+        $this->navigator->registerMovementTo($point);
         $this->planner->arrived($point);
+        $this->doorsManager->openDoors();
         $this->cargoService->freeCargoByDestination($point);
-        //todo for parallelism
-        //set timeout for waiting acceptance cargo and calls
     }
 
     /**
@@ -207,5 +212,18 @@ class DefaultLift implements LiftInterface, MovementControlInterface, Navigation
     private function getNextPoint() : ?NavigationPointInterface
     {
         return $this->planner->getNextPoint();
+    }
+
+    /**
+     * @param NavigationPointInterface $point
+     * @param string|null $direction
+     */
+    private function planPoint(NavigationPointInterface $point, ?string $direction)
+    {
+        $currentPoint = $this->navigator->getCurrentPoint();
+        //do not plan point that equals to current point
+        if($currentPoint->getPosition() !== $point->getPosition()) {
+            $this->planner->planPoint($point, $direction);
+        }
     }
 }

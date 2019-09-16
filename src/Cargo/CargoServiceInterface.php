@@ -18,12 +18,26 @@ use Decadal\Lift\Navigation\NavigationPointInterface;
  */
 interface CargoServiceInterface
 {
+    /**
+     * @param CargoCollection $collection
+     * @return mixed
+     */
     public function acceptCargo(CargoCollection $collection);
 
+    /**
+     * @return int
+     */
     public function getTotalWeight() : int;
 
+    /**
+     * @return int
+     */
     public function getMaxWeight() : int;
 
+    /**
+     * @param NavigationPointInterface $point
+     * @return array
+     */
     public function freeCargoByDestination(NavigationPointInterface $point) : array;
 
 }

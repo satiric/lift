@@ -83,7 +83,7 @@ class DefaultCargoService implements CargoServiceInterface
             if(
                 $item instanceof HasDestinationInterface
                 &&
-                $item->getDestination()->getPosition() === $point->getPosition()
+                $item->getDestination() === $point->getPosition()
             ) {
                 $toFree[] = $item;
                 $this->cachedWeight-= $item->getWeight();

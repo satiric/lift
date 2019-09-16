@@ -9,6 +9,7 @@
 namespace Decadal\Lift\Navigation\Service;
 
 
+use Decadal\Lift\Navigation\DistanceItemInterface;
 use Decadal\Lift\Navigation\NavigationPointInterface;
 
 /**
@@ -17,10 +18,23 @@ use Decadal\Lift\Navigation\NavigationPointInterface;
  */
 interface DistanceCalculatorInterface
 {
+
     /**
-     * @param int $position
+     * @param int $distance
      * @param array $sequence
      * @return NavigationPointInterface
      */
-    public function calculatePointByPosition(int $position, array $sequence) : NavigationPointInterface;
+    public function calculatePointByAbsoluteDistance(int $distance, array $sequence) : NavigationPointInterface;
+
+    /**
+     * @param DistanceItemInterface $point1
+     * @param DistanceItemInterface $point2
+     * @param array $sequence
+     * @return int
+     */
+    public function absoluteDistanceDiff(
+        DistanceItemInterface $point1,
+        DistanceItemInterface $point2,
+        array $sequence
+    ) : int;
 }

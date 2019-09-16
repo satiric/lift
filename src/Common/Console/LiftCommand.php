@@ -10,10 +10,12 @@ namespace Decadal\Lift\Common\Console;
 
 use Decadal\Lift\Cargo\Collection\CargoCollection;
 use Decadal\Lift\Cargo\Model\CargoItem;
+use Decadal\Lift\Common\Exception\BadParamException;
 use Decadal\Lift\LiftInterface;
 use Decadal\Lift\Movement\Engine\Enum\Directions;
 use Decadal\Lift\MovementControlInterface;
 use Decadal\Lift\NavigationInterface;
+use Exception;
 use Zend\Console\Adapter\AdapterInterface;
 use ZF\Console\Route;
 
@@ -31,12 +33,12 @@ class LiftCommand implements CommandInterface
     /**
      * LiftCommand constructor.
      * @param LiftInterface $lift
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(LiftInterface $lift)
     {
         if(!$lift instanceof  NavigationInterface || !$lift instanceof MovementControlInterface) {
-            throw new \Exception("Lift should implements Navigation and MovementControl interfaces");
+            throw new Exception("Lift should implements Navigation and MovementControl interfaces");
         }
         $this->lift = $lift;
     }
@@ -44,7 +46,7 @@ class LiftCommand implements CommandInterface
     /**
      * @param Route $route
      * @param AdapterInterface $adapter
-     * @throws \Decadal\Lift\Common\Exception\BadParamException
+     * @throws BadParamException
      */
     public function __invoke(Route $route, AdapterInterface $adapter)
     {

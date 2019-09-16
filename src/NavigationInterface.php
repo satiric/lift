@@ -9,8 +9,6 @@
 namespace Decadal\Lift;
 
 
-use Decadal\Lift\Navigation\NavigationPointInterface;
-
 interface NavigationInterface
 {
     public function getCurrentPosition() : int;

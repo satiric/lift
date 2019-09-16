@@ -10,11 +10,15 @@ namespace Decadal\Lift\Navigation;
 
 
 use Decadal\Lift\Common\Exception\BadParamException;
+use Decadal\Lift\Common\Exception\CommonException;
 use Decadal\Lift\Movement\Engine\Enum\Directions;
 use Decadal\Lift\Navigation\Service\DistanceCalculatorInterface;
 use Decadal\Lift\Navigation\Service\PointsMapInterface;
 
-
+/**
+ * Class DefaultNavigator
+ * @package Decadal\Lift\Navigation
+ */
 class DefaultNavigator implements NavigatorInterface
 {
     /**
@@ -30,7 +34,7 @@ class DefaultNavigator implements NavigatorInterface
     /**
      * @var int
      */
-    private $currentPosition = 0;
+    private $currentDistance = 0;
 
     /**
      * DefaultNavigator constructor.
@@ -43,20 +47,29 @@ class DefaultNavigator implements NavigatorInterface
         $this->calculator = $calculator;
     }
 
+    /**
+     * @return NavigationPointInterface
+     */
     public function getFirstPoint() : NavigationPointInterface
     {
         return $this->pointsMap->getFirst();
 
     }
 
+    /**
+     * @return NavigationPointInterface
+     */
     public function getLastPoint() : NavigationPointInterface
     {
         return $this->pointsMap->getLast();
     }
 
+    /**
+     * @return NavigationPointInterface|DistanceItemInterface
+     */
     public function getCurrentPoint() : NavigationPointInterface
     {
-        return $this->calculator->calculatePointByPosition($this->currentPosition, $this->pointsMap->getSequence());
+        return $this->calculator->calculatePointByAbsoluteDistance($this->currentDistance, $this->pointsMap->getSequence());
     }
 
     /**
@@ -76,13 +89,22 @@ class DefaultNavigator implements NavigatorInterface
             : Directions::UP;
     }
 
+    /**
+     * @param NavigationPointInterface $point
+     * @return int
+     * @throws CommonException
+     */
     public function determineDistance(NavigationPointInterface $point): int
     {
-        // TODO: Implement determineDistance() method.
+        if(!$point instanceof DistanceItemInterface) {
+            throw new CommonException("Navigation point should be an DistanceItemInterface");
+        }
+        $currentPoint = $this->getCurrentPoint();
+        return $this->calculator->absoluteDistanceDiff($currentPoint, $point, $this->pointsMap->getSequence());
     }
 
     /**
-     * @param int $position
+     * @param int $position - equals to floor's number
      * @return NavigationPointInterface
      * @throws BadParamException
      */
@@ -93,5 +115,22 @@ class DefaultNavigator implements NavigatorInterface
             throw new BadParamException("Such point is not found");
         }
         return $point;
+    }
+
+    /**
+     * @param NavigationPointInterface $point
+     * @return mixed|void
+     * @throws CommonException
+     */
+    public function registerMovementTo(NavigationPointInterface $point)
+    {
+        $distance = $this->determineDistance($point);
+        $currentPoint = $this->getCurrentPoint();
+        if($currentPoint->getPosition() > $point->getPosition()) {
+            $this->currentDistance -= $distance;
+        }
+        else {
+            $this->currentDistance += $distance;
+        }
     }
 }

@@ -23,7 +23,7 @@ class DoorsCollection
 
     /**
      * DoorsCollection constructor.
-     * @param array $doors
+     * @param DoorsInterface[] $doors
      * @throws BadParamException
      */
     public function __construct(array $doors = [])

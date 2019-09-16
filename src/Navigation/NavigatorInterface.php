@@ -8,25 +8,49 @@
 
 namespace Decadal\Lift\Navigation;
 
-
+/**
+ * Interface NavigatorInterface
+ * @package Decadal\Lift\Navigation
+ */
 interface NavigatorInterface
 {
+    /**
+     * @return NavigationPointInterface
+     */
     public function getFirstPoint() : NavigationPointInterface;
 
-    public function getLastPoint() : NavigationPointInterface;
     /**
-     * @param NavigationPointInterface[] $points
-     * @return mixed
+     * @return NavigationPointInterface
      */
-    public function setPointsMap(array $points);
+    public function getLastPoint() : NavigationPointInterface;
 
+    /**
+     * @return NavigationPointInterface
+     */
     public function getCurrentPoint() : NavigationPointInterface;
 
+    /**
+     * @param NavigationPointInterface $point
+     * @return string|null
+     */
     public function determineDirection(NavigationPointInterface $point) : ?string;
 
+    /**
+     * @param NavigationPointInterface $point
+     * @return int
+     */
     public function determineDistance(NavigationPointInterface $point) : int;
 
+    /**
+     * @param int $position
+     * @return mixed
+     */
+    public function getPointByPosition(int $position) : NavigationPointInterface;
 
-    public function getPointByPosition(int $position);
+    /**
+     * @param NavigationPointInterface $point
+     * @return mixed
+     */
+    public function registerMovementTo(NavigationPointInterface $point);
 
 }
